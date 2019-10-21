@@ -5,14 +5,18 @@ import { useAuth } from '../context/auth';
 
 // Route for using auth with
 function PrivateFunction({ component: Component, ...rest }) {
-
-  const isAuthenticated = useAuth();
+  const  { authTokens } = useAuth()
+  // const isAuthenticated = useAuth();
 
   return (
-    <Route {...rest} render=
-      {(props) => isAuthenticated 
-        ? ( <Component {...props} /> ) // if authenticated
-        : ( <Redirect to="/login" /> ) // else go to home page
+    <Route 
+      {...rest} 
+      render={(props) => 
+        authTokens ? ( 
+          <Component {...props} /> 
+        ) : ( 
+          <Redirect to="/login" /> 
+        ) // else go to home page
       } 
     />
   );
