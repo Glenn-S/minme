@@ -69,4 +69,4 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
 
 ### Necessary Libraries
 
-npm install --save react react-redux redux redux-thunk react-cookie react-router-dom
+npm install --save react react-redux redux redux-thunk react-cookie react-router-dom styled-components

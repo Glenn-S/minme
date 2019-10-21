@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{ useState } from 'react';
 import { 
     Route, 
     Link, 
@@ -6,47 +6,52 @@ import {
     BrowserRouter as Router, 
     Switch 
 } from 'react-router-dom';
+import PrivateRoute from './PrivateRoute';
+import { AuthContext } from '../context/auth';
 
-import Home from './Home'
-import Contact from './Contact';
-import User from './User';
-import NotFound from './notfound';
+import Home from './pages/Home';
+import Admin from './pages/Admin';
+import Register from './pages/Register';
+import NotFound from './pages/notfound';
+import Login from './pages/Login';
 
-class App extends React.Component {
+const App = () => {
     
-    render() {
-        const { params } = this.props.match;
+    const [authTokens, setAuthTokens] = useState();
 
-        return (
-            <Router>
-            <div>
-                <div className='ui secondary pointing menu'>
-                    <NavLink exact className='item' to="/">
-                        Home
-                    </NavLink>
-                    
-                    <NavLink className='item' to="/contact">
-                        Contact
-                    </NavLink>
-                    
-                    <NavLink className='item' to="/user">
-                        User
-                    </NavLink>
-                </div>
-    
-                <div className='ui segment'> 
-                    {/* This displays what ever the router pulls up */}
-                    <Switch>
-                        <Route exact path="/" component={Home} />
-                        <Route path="/contact" component={Contact} />
-                        <Route path="/user/" component={User} />
-                        <Route component={NotFound} />
-                    </Switch>
-                </div>
-            </div>
-        </Router>
-        );
+    const setTokens = (data) => {
+        localStorage.setItem("tokens", JSON.stringify(data));
+        setAuthTokens(data);
     }
+
+    return (
+        <AuthContext.Provider value={false}>
+            <Router>
+                <div>
+                    <div className='ui secondary pointing menu'>
+                        <NavLink exact className='item' to="/">
+                            Home
+                        </NavLink>
+                        <NavLink exact className='item' to='/admin'>
+                            Admin
+                        </NavLink>
+                    </div>
+            
+                    <div className='ui segment'> 
+                        {/* This displays what ever the router pulls up */}
+                        <Switch>
+                            <Route exact path="/" component={Home} />
+                            <Route path="/login" component={Login} />
+                            <Route path="/register" component={Register} />
+                            <PrivateRoute path="/admin" component={Admin} />
+                            <Route component={NotFound} />
+                        </Switch>
+                    </div>
+                </div>
+            </Router>
+        </AuthContext.Provider>
+    );
 }
+
 
 export default App;
